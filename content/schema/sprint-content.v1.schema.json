@@ -1,0 +1,3012 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "sprint_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "learning_goal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "fixture_only": {
+      "default": false,
+      "type": "boolean"
+    },
+    "slots": {
+      "minItems": 7,
+      "maxItems": 7,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "default_activity": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "content_version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+$"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "level": {
+                "type": "string",
+                "enum": [
+                  "B1",
+                  "B2",
+                  "C1"
+                ]
+              },
+              "topic": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "learning_objective": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "activity_type": {
+                "type": "string",
+                "enum": [
+                  "progressive_reconstruction",
+                  "inline_dialogue_gap",
+                  "conversation_bubble",
+                  "choose_then_personalize",
+                  "say_it_another_way",
+                  "text_scenario",
+                  "micro_explore"
+                ]
+              },
+              "compatible_modes": {
+                "minItems": 1,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "reconstruct",
+                    "talk-about-something",
+                    "explore-a-topic",
+                    "surprise-me"
+                  ]
+                }
+              },
+              "compatible_states": {
+                "minItems": 1,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ready",
+                    "tired",
+                    "bored",
+                    "curious",
+                    "focused"
+                  ]
+                }
+              },
+              "target_language_keys": {
+                "minItems": 1,
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                }
+              },
+              "glossary": {
+                "minItems": 1,
+                "maxItems": 60,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100,
+                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "word",
+                        "chunk",
+                        "pattern",
+                        "communicative_intention"
+                      ]
+                    },
+                    "canonical_form": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "meaning_ru": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "example_en": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "pattern_note": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "kind",
+                    "canonical_form",
+                    "meaning_ru",
+                    "example_en"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "returning_items": {
+                "default": [],
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ref_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "provenance": {
+                      "type": "string",
+                      "enum": [
+                        "learner_selected",
+                        "self_reported_support",
+                        "closed_task_match",
+                        "translation_opened",
+                        "support_used"
+                      ]
+                    },
+                    "intended_use": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "claim": {
+                      "type": "string",
+                      "enum": [
+                        "saved_for_practice",
+                        "needs_support",
+                        "returning_review"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "ref_id",
+                    "provenance",
+                    "intended_use",
+                    "claim"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "steps": {
+                "minItems": 1,
+                "maxItems": 12,
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100,
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        },
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "understand",
+                            "notice",
+                            "rebuild",
+                            "retrieve",
+                            "transfer",
+                            "reflect"
+                          ]
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "progress_bearing": {
+                          "type": "boolean"
+                        },
+                        "optional": {
+                          "default": false,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": "string",
+                          "const": "content_acknowledgement"
+                        },
+                        "completion_rule": {
+                          "type": "string",
+                          "const": "explicit_continue"
+                        },
+                        "instruction": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "content": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "continue_label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "phase",
+                        "title",
+                        "progress_bearing",
+                        "optional",
+                        "type",
+                        "completion_rule",
+                        "instruction",
+                        "content",
+                        "continue_label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100,
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        },
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "understand",
+                            "notice",
+                            "rebuild",
+                            "retrieve",
+                            "transfer",
+                            "reflect"
+                          ]
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "progress_bearing": {
+                          "type": "boolean"
+                        },
+                        "optional": {
+                          "default": false,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": "string",
+                          "const": "language_noticing"
+                        },
+                        "completion_rule": {
+                          "type": "string",
+                          "const": "complete_selections"
+                        },
+                        "prompt": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "source": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "jobs": {
+                          "minItems": 1,
+                          "maxItems": 10,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100,
+                                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                              },
+                              "label": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "accepted_glossary_keys": {
+                                "minItems": 1,
+                                "maxItems": 10,
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100,
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                }
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "accepted_glossary_keys"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "phase",
+                        "title",
+                        "progress_bearing",
+                        "optional",
+                        "type",
+                        "completion_rule",
+                        "prompt",
+                        "source",
+                        "jobs"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100,
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        },
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "understand",
+                            "notice",
+                            "rebuild",
+                            "retrieve",
+                            "transfer",
+                            "reflect"
+                          ]
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "progress_bearing": {
+                          "type": "boolean"
+                        },
+                        "optional": {
+                          "default": false,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": "string",
+                          "const": "inline_text"
+                        },
+                        "completion_rule": {
+                          "type": "string",
+                          "const": "submit_all"
+                        },
+                        "prompt": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "items": {
+                          "minItems": 1,
+                          "maxItems": 20,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100,
+                                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                              },
+                              "prompt": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "accepted_answers": {
+                                "minItems": 1,
+                                "maxItems": 20,
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 500
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "enum": [
+                                        "target",
+                                        "valid_alternative"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "value",
+                                    "label"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "target_glossary_key": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100,
+                                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "prompt",
+                              "accepted_answers"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "normalisation": {
+                          "type": "object",
+                          "properties": {
+                            "ignore_case": {
+                              "type": "boolean"
+                            },
+                            "collapse_whitespace": {
+                              "type": "boolean"
+                            },
+                            "ignore_terminal_punctuation": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "ignore_case",
+                            "collapse_whitespace",
+                            "ignore_terminal_punctuation"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "completed_text": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "phase",
+                        "title",
+                        "progress_bearing",
+                        "optional",
+                        "type",
+                        "completion_rule",
+                        "prompt",
+                        "items",
+                        "normalisation",
+                        "completed_text"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100,
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        },
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "understand",
+                            "notice",
+                            "rebuild",
+                            "retrieve",
+                            "transfer",
+                            "reflect"
+                          ]
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "progress_bearing": {
+                          "type": "boolean"
+                        },
+                        "optional": {
+                          "default": false,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": "string",
+                          "const": "reconstruction"
+                        },
+                        "completion_rule": {
+                          "type": "string",
+                          "const": "submit_all"
+                        },
+                        "prompt": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "items": {
+                          "minItems": 1,
+                          "maxItems": 20,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100,
+                                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                              },
+                              "prompt": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "accepted_answers": {
+                                "minItems": 1,
+                                "maxItems": 20,
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 500
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "enum": [
+                                        "target",
+                                        "valid_alternative"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "value",
+                                    "label"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "target_glossary_key": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100,
+                                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "prompt",
+                              "accepted_answers"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "normalisation": {
+                          "type": "object",
+                          "properties": {
+                            "ignore_case": {
+                              "type": "boolean"
+                            },
+                            "collapse_whitespace": {
+                              "type": "boolean"
+                            },
+                            "ignore_terminal_punctuation": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "ignore_case",
+                            "collapse_whitespace",
+                            "ignore_terminal_punctuation"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "completed_text": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "phase",
+                        "title",
+                        "progress_bearing",
+                        "optional",
+                        "type",
+                        "completion_rule",
+                        "prompt",
+                        "items",
+                        "normalisation",
+                        "completed_text"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100,
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        },
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "understand",
+                            "notice",
+                            "rebuild",
+                            "retrieve",
+                            "transfer",
+                            "reflect"
+                          ]
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "progress_bearing": {
+                          "type": "boolean"
+                        },
+                        "optional": {
+                          "default": false,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": "string",
+                          "const": "free_text"
+                        },
+                        "completion_rule": {
+                          "type": "string",
+                          "const": "submit_response"
+                        },
+                        "prompt": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "scenario": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "text"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 5000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "glossary_ref"
+                                  },
+                                  "key": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  },
+                                  "display": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "key",
+                                  "display"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "natural_examples": {
+                          "minItems": 1,
+                          "maxItems": 5,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "text": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              }
+                            },
+                            "required": [
+                              "label",
+                              "text"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "comparison_checklist": {
+                          "minItems": 1,
+                          "maxItems": 10,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          }
+                        },
+                        "target_language_keys": {
+                          "minItems": 1,
+                          "maxItems": 20,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          }
+                        },
+                        "source_visibility": {
+                          "type": "string",
+                          "enum": [
+                            "visible",
+                            "hidden_until_help"
+                          ]
+                        },
+                        "hints": {
+                          "maxItems": 3,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 3
+                              },
+                              "content": {
+                                "minItems": 1,
+                                "maxItems": 100,
+                                "type": "array",
+                                "items": {
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "const": "text"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 5000
+                                        }
+                                      },
+                                      "required": [
+                                        "type",
+                                        "value"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "const": "glossary_ref"
+                                        },
+                                        "key": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 100,
+                                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                        },
+                                        "display": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 2000
+                                        }
+                                      },
+                                      "required": [
+                                        "type",
+                                        "key",
+                                        "display"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  ]
+                                }
+                              },
+                              "reveals_target_language": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "level",
+                              "content",
+                              "reveals_target_language"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "phase",
+                        "title",
+                        "progress_bearing",
+                        "optional",
+                        "type",
+                        "completion_rule",
+                        "prompt",
+                        "natural_examples",
+                        "comparison_checklist",
+                        "target_language_keys",
+                        "source_visibility",
+                        "hints"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100,
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        },
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "understand",
+                            "notice",
+                            "rebuild",
+                            "retrieve",
+                            "transfer",
+                            "reflect"
+                          ]
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "progress_bearing": {
+                          "type": "boolean"
+                        },
+                        "optional": {
+                          "default": false,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": "string",
+                          "const": "reflection"
+                        },
+                        "completion_rule": {
+                          "type": "string",
+                          "const": "explicit_finish"
+                        },
+                        "heading": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "glossary_keys": {
+                          "minItems": 1,
+                          "maxItems": 60,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          }
+                        },
+                        "custom_note_prompt": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "custom_note_placeholder": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "self_assessment_scope": {
+                          "type": "string",
+                          "enum": [
+                            "activity",
+                            "item"
+                          ]
+                        },
+                        "self_assessment_options": {
+                          "minItems": 3,
+                          "maxItems": 3,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "clear",
+                              "try_again",
+                              "need_support"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "phase",
+                        "title",
+                        "progress_bearing",
+                        "optional",
+                        "type",
+                        "completion_rule",
+                        "heading",
+                        "glossary_keys",
+                        "custom_note_prompt",
+                        "custom_note_placeholder",
+                        "self_assessment_scope",
+                        "self_assessment_options"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "key",
+              "content_version",
+              "title",
+              "level",
+              "topic",
+              "learning_objective",
+              "activity_type",
+              "compatible_modes",
+              "compatible_states",
+              "target_language_keys",
+              "glossary",
+              "returning_items",
+              "steps"
+            ],
+            "additionalProperties": false
+          },
+          "alternatives": {
+            "default": [],
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                },
+                "content_version": {
+                  "type": "string",
+                  "pattern": "^\\d+\\.\\d+$"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "level": {
+                  "type": "string",
+                  "enum": [
+                    "B1",
+                    "B2",
+                    "C1"
+                  ]
+                },
+                "topic": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "learning_objective": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "activity_type": {
+                  "type": "string",
+                  "enum": [
+                    "progressive_reconstruction",
+                    "inline_dialogue_gap",
+                    "conversation_bubble",
+                    "choose_then_personalize",
+                    "say_it_another_way",
+                    "text_scenario",
+                    "micro_explore"
+                  ]
+                },
+                "compatible_modes": {
+                  "minItems": 1,
+                  "maxItems": 4,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "reconstruct",
+                      "talk-about-something",
+                      "explore-a-topic",
+                      "surprise-me"
+                    ]
+                  }
+                },
+                "compatible_states": {
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "ready",
+                      "tired",
+                      "bored",
+                      "curious",
+                      "focused"
+                    ]
+                  }
+                },
+                "target_language_keys": {
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  }
+                },
+                "glossary": {
+                  "minItems": 1,
+                  "maxItems": 60,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "word",
+                          "chunk",
+                          "pattern",
+                          "communicative_intention"
+                        ]
+                      },
+                      "canonical_form": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "meaning_ru": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "example_en": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "pattern_note": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "kind",
+                      "canonical_form",
+                      "meaning_ru",
+                      "example_en"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "returning_items": {
+                  "default": [],
+                  "maxItems": 20,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ref_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "provenance": {
+                        "type": "string",
+                        "enum": [
+                          "learner_selected",
+                          "self_reported_support",
+                          "closed_task_match",
+                          "translation_opened",
+                          "support_used"
+                        ]
+                      },
+                      "intended_use": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "claim": {
+                        "type": "string",
+                        "enum": [
+                          "saved_for_practice",
+                          "needs_support",
+                          "returning_review"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "ref_id",
+                      "provenance",
+                      "intended_use",
+                      "claim"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "steps": {
+                  "minItems": 1,
+                  "maxItems": 12,
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "phase": {
+                            "type": "string",
+                            "enum": [
+                              "understand",
+                              "notice",
+                              "rebuild",
+                              "retrieve",
+                              "transfer",
+                              "reflect"
+                            ]
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "progress_bearing": {
+                            "type": "boolean"
+                          },
+                          "optional": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "const": "content_acknowledgement"
+                          },
+                          "completion_rule": {
+                            "type": "string",
+                            "const": "explicit_continue"
+                          },
+                          "instruction": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "content": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "continue_label": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "phase",
+                          "title",
+                          "progress_bearing",
+                          "optional",
+                          "type",
+                          "completion_rule",
+                          "instruction",
+                          "content",
+                          "continue_label"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "phase": {
+                            "type": "string",
+                            "enum": [
+                              "understand",
+                              "notice",
+                              "rebuild",
+                              "retrieve",
+                              "transfer",
+                              "reflect"
+                            ]
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "progress_bearing": {
+                            "type": "boolean"
+                          },
+                          "optional": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "const": "language_noticing"
+                          },
+                          "completion_rule": {
+                            "type": "string",
+                            "const": "complete_selections"
+                          },
+                          "prompt": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "source": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "jobs": {
+                            "minItems": 1,
+                            "maxItems": 10,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100,
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "accepted_glossary_keys": {
+                                  "minItems": 1,
+                                  "maxItems": 10,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "label",
+                                "accepted_glossary_keys"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "phase",
+                          "title",
+                          "progress_bearing",
+                          "optional",
+                          "type",
+                          "completion_rule",
+                          "prompt",
+                          "source",
+                          "jobs"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "phase": {
+                            "type": "string",
+                            "enum": [
+                              "understand",
+                              "notice",
+                              "rebuild",
+                              "retrieve",
+                              "transfer",
+                              "reflect"
+                            ]
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "progress_bearing": {
+                            "type": "boolean"
+                          },
+                          "optional": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "const": "inline_text"
+                          },
+                          "completion_rule": {
+                            "type": "string",
+                            "const": "submit_all"
+                          },
+                          "prompt": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "items": {
+                            "minItems": 1,
+                            "maxItems": 20,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100,
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                },
+                                "prompt": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "accepted_answers": {
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "value": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 500
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "target",
+                                          "valid_alternative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "value",
+                                      "label"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "target_glossary_key": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100,
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "prompt",
+                                "accepted_answers"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "normalisation": {
+                            "type": "object",
+                            "properties": {
+                              "ignore_case": {
+                                "type": "boolean"
+                              },
+                              "collapse_whitespace": {
+                                "type": "boolean"
+                              },
+                              "ignore_terminal_punctuation": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "ignore_case",
+                              "collapse_whitespace",
+                              "ignore_terminal_punctuation"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "completed_text": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "phase",
+                          "title",
+                          "progress_bearing",
+                          "optional",
+                          "type",
+                          "completion_rule",
+                          "prompt",
+                          "items",
+                          "normalisation",
+                          "completed_text"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "phase": {
+                            "type": "string",
+                            "enum": [
+                              "understand",
+                              "notice",
+                              "rebuild",
+                              "retrieve",
+                              "transfer",
+                              "reflect"
+                            ]
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "progress_bearing": {
+                            "type": "boolean"
+                          },
+                          "optional": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "const": "reconstruction"
+                          },
+                          "completion_rule": {
+                            "type": "string",
+                            "const": "submit_all"
+                          },
+                          "prompt": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "items": {
+                            "minItems": 1,
+                            "maxItems": 20,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100,
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                },
+                                "prompt": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "accepted_answers": {
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "value": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 500
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "enum": [
+                                          "target",
+                                          "valid_alternative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "value",
+                                      "label"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "target_glossary_key": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100,
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "prompt",
+                                "accepted_answers"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "normalisation": {
+                            "type": "object",
+                            "properties": {
+                              "ignore_case": {
+                                "type": "boolean"
+                              },
+                              "collapse_whitespace": {
+                                "type": "boolean"
+                              },
+                              "ignore_terminal_punctuation": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "ignore_case",
+                              "collapse_whitespace",
+                              "ignore_terminal_punctuation"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "completed_text": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "phase",
+                          "title",
+                          "progress_bearing",
+                          "optional",
+                          "type",
+                          "completion_rule",
+                          "prompt",
+                          "items",
+                          "normalisation",
+                          "completed_text"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "phase": {
+                            "type": "string",
+                            "enum": [
+                              "understand",
+                              "notice",
+                              "rebuild",
+                              "retrieve",
+                              "transfer",
+                              "reflect"
+                            ]
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "progress_bearing": {
+                            "type": "boolean"
+                          },
+                          "optional": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "const": "free_text"
+                          },
+                          "completion_rule": {
+                            "type": "string",
+                            "const": "submit_response"
+                          },
+                          "prompt": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "scenario": {
+                            "minItems": 1,
+                            "maxItems": 100,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "text"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 5000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "glossary_ref"
+                                    },
+                                    "key": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100,
+                                      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                    },
+                                    "display": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "key",
+                                    "display"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "natural_examples": {
+                            "minItems": 1,
+                            "maxItems": 5,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "label": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "text": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                }
+                              },
+                              "required": [
+                                "label",
+                                "text"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "comparison_checklist": {
+                            "minItems": 1,
+                            "maxItems": 10,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            }
+                          },
+                          "target_language_keys": {
+                            "minItems": 1,
+                            "maxItems": 20,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100,
+                              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                            }
+                          },
+                          "source_visibility": {
+                            "type": "string",
+                            "enum": [
+                              "visible",
+                              "hidden_until_help"
+                            ]
+                          },
+                          "hints": {
+                            "maxItems": 3,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "level": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 3
+                                },
+                                "content": {
+                                  "minItems": 1,
+                                  "maxItems": 100,
+                                  "type": "array",
+                                  "items": {
+                                    "oneOf": [
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "type": {
+                                            "type": "string",
+                                            "const": "text"
+                                          },
+                                          "value": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 5000
+                                          }
+                                        },
+                                        "required": [
+                                          "type",
+                                          "value"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "type": {
+                                            "type": "string",
+                                            "const": "glossary_ref"
+                                          },
+                                          "key": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 100,
+                                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                          },
+                                          "display": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 2000
+                                          }
+                                        },
+                                        "required": [
+                                          "type",
+                                          "key",
+                                          "display"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    ]
+                                  }
+                                },
+                                "reveals_target_language": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "level",
+                                "content",
+                                "reveals_target_language"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "phase",
+                          "title",
+                          "progress_bearing",
+                          "optional",
+                          "type",
+                          "completion_rule",
+                          "prompt",
+                          "natural_examples",
+                          "comparison_checklist",
+                          "target_language_keys",
+                          "source_visibility",
+                          "hints"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100,
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "phase": {
+                            "type": "string",
+                            "enum": [
+                              "understand",
+                              "notice",
+                              "rebuild",
+                              "retrieve",
+                              "transfer",
+                              "reflect"
+                            ]
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "progress_bearing": {
+                            "type": "boolean"
+                          },
+                          "optional": {
+                            "default": false,
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "const": "reflection"
+                          },
+                          "completion_rule": {
+                            "type": "string",
+                            "const": "explicit_finish"
+                          },
+                          "heading": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "glossary_keys": {
+                            "minItems": 1,
+                            "maxItems": 60,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100,
+                              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                            }
+                          },
+                          "custom_note_prompt": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "custom_note_placeholder": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "self_assessment_scope": {
+                            "type": "string",
+                            "enum": [
+                              "activity",
+                              "item"
+                            ]
+                          },
+                          "self_assessment_options": {
+                            "minItems": 3,
+                            "maxItems": 3,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "clear",
+                                "try_again",
+                                "need_support"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "phase",
+                          "title",
+                          "progress_bearing",
+                          "optional",
+                          "type",
+                          "completion_rule",
+                          "heading",
+                          "glossary_keys",
+                          "custom_note_prompt",
+                          "custom_note_placeholder",
+                          "self_assessment_scope",
+                          "self_assessment_options"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "key",
+                "content_version",
+                "title",
+                "level",
+                "topic",
+                "learning_objective",
+                "activity_type",
+                "compatible_modes",
+                "compatible_states",
+                "target_language_keys",
+                "glossary",
+                "returning_items",
+                "steps"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "key",
+          "position",
+          "default_activity",
+          "alternatives"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "sprint_key",
+    "title",
+    "learning_goal",
+    "fixture_only",
+    "slots"
+  ],
+  "additionalProperties": false
+}

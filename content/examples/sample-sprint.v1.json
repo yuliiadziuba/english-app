@@ -1,0 +1,195 @@
+{
+  "schema_version": "1.0",
+  "sprint_key": "contract-sample-sprint",
+  "title": "Active English Contract Sample",
+  "learning_goal": "Practise explaining problems, decisions, and ideas with reusable language.",
+  "fixture_only": true,
+  "slots": [
+    {
+      "key": "bug-before-release-slot",
+      "position": 1,
+      "default_activity": {
+        "key": "bug-before-release-b2",
+        "content_version": "1.0",
+        "title": "A critical bug before release",
+        "level": "B2",
+        "topic": "QA/testing and release communication",
+        "learning_objective": "Explain a critical issue, describe its impact, and recommend a next step to a team lead.",
+        "activity_type": "progressive_reconstruction",
+        "compatible_modes": ["reconstruct"],
+        "compatible_states": ["ready", "focused", "tired"],
+        "target_language_keys": ["notice-an-issue", "affect-a-flow", "prevent-from-ing", "recommend-ing", "main-concern"],
+        "glossary": [
+          { "key": "notice-an-issue", "kind": "chunk", "canonical_form": "notice an issue", "meaning_ru": "заметить проблему", "example_en": "I noticed an issue during regression testing." },
+          { "key": "during-regression-testing", "kind": "chunk", "canonical_form": "during regression testing", "meaning_ru": "во время регрессионного тестирования", "example_en": "We found it during regression testing.", "pattern_note": "A time and context chunk." },
+          { "key": "affect-a-flow", "kind": "chunk", "canonical_form": "affect the checkout flow", "meaning_ru": "влиять на процесс оформления заказа", "example_en": "The bug affects the checkout flow." },
+          { "key": "prevent-from-ing", "kind": "pattern", "canonical_form": "prevent someone from doing something", "meaning_ru": "мешать кому-либо сделать что-либо", "example_en": "It prevents users from completing their orders.", "pattern_note": "Use prevent + object + from + -ing." },
+          { "key": "recommend-ing", "kind": "pattern", "canonical_form": "recommend + -ing", "meaning_ru": "рекомендовать сделать что-либо", "example_en": "I'd recommend fixing it before the release.", "pattern_note": "Use recommend + -ing, not recommend to fix." },
+          { "key": "main-concern", "kind": "communicative_intention", "canonical_form": "My main concern is…", "meaning_ru": "Меня больше всего беспокоит…", "example_en": "My main concern is that customers cannot place orders." }
+        ],
+        "returning_items": [],
+        "steps": [
+          {
+            "key": "understand-update",
+            "phase": "understand",
+            "title": "Understand the update",
+            "progress_bearing": true,
+            "optional": false,
+            "type": "content_acknowledgement",
+            "completion_rule": "explicit_continue",
+            "instruction": [{ "type": "text", "value": "Read the update. Tap an underlined phrase if you want contextual help." }],
+            "content": [
+              { "type": "text", "value": "I " },
+              { "type": "glossary_ref", "key": "notice-an-issue", "display": "noticed a critical issue" },
+              { "type": "text", "value": " " },
+              { "type": "glossary_ref", "key": "during-regression-testing", "display": "during regression testing" },
+              { "type": "text", "value": ". The bug " },
+              { "type": "glossary_ref", "key": "affect-a-flow", "display": "affects the checkout flow" },
+              { "type": "text", "value": " and " },
+              { "type": "glossary_ref", "key": "prevent-from-ing", "display": "prevents users from completing their orders" },
+              { "type": "text", "value": ". " },
+              { "type": "glossary_ref", "key": "recommend-ing", "display": "I'd recommend fixing it before the release" },
+              { "type": "text", "value": "." }
+            ],
+            "continue_label": "Continue"
+          },
+          {
+            "key": "notice-jobs",
+            "phase": "notice",
+            "title": "Notice useful language",
+            "progress_bearing": true,
+            "optional": false,
+            "type": "language_noticing",
+            "completion_rule": "complete_selections",
+            "prompt": [{ "type": "text", "value": "Which phrases help the speaker do these jobs? Select one phrase for each." }],
+            "source": [{ "type": "text", "value": "I noticed a critical issue during regression testing. The bug affects the checkout flow and prevents users from completing their orders. I'd recommend fixing it before the release." }],
+            "jobs": [
+              { "key": "introduce-discovery", "label": "Introduce the discovery", "accepted_glossary_keys": ["notice-an-issue"] },
+              { "key": "explain-consequence", "label": "Explain the consequence", "accepted_glossary_keys": ["prevent-from-ing"] },
+              { "key": "recommend-action", "label": "Recommend an action", "accepted_glossary_keys": ["recommend-ing"] }
+            ]
+          },
+          {
+            "key": "rebuild-update",
+            "phase": "rebuild",
+            "title": "Rebuild the update",
+            "progress_bearing": true,
+            "optional": false,
+            "type": "inline_text",
+            "completion_rule": "submit_all",
+            "prompt": [{ "type": "text", "value": "Complete the update. Use the meaning around each gap." }],
+            "items": [
+              { "key": "critical-issue-gap", "prompt": "I noticed a ___ during regression testing.", "accepted_answers": [{ "value": "critical issue", "label": "target" }, { "value": "critical problem", "label": "valid_alternative" }], "target_glossary_key": "notice-an-issue" },
+              { "key": "affects-gap", "prompt": "The bug ___ the checkout flow.", "accepted_answers": [{ "value": "affects", "label": "target" }], "target_glossary_key": "affect-a-flow" },
+              { "key": "prevents-gap", "prompt": "It prevents users ___ their orders.", "accepted_answers": [{ "value": "from completing", "label": "target" }, { "value": "from finishing", "label": "valid_alternative" }], "target_glossary_key": "prevent-from-ing" },
+              { "key": "recommend-gap", "prompt": "I'd recommend ___ it before the release.", "accepted_answers": [{ "value": "fixing", "label": "target" }, { "value": "resolving", "label": "valid_alternative" }], "target_glossary_key": "recommend-ing" }
+            ],
+            "normalisation": { "ignore_case": true, "collapse_whitespace": true, "ignore_terminal_punctuation": true },
+            "completed_text": [{ "type": "text", "value": "I noticed a critical issue during regression testing. The bug affects the checkout flow and prevents users from completing their orders. I'd recommend fixing it before the release." }]
+          },
+          {
+            "key": "retrieve-update",
+            "phase": "retrieve",
+            "title": "Explain it from memory",
+            "progress_bearing": true,
+            "optional": false,
+            "type": "free_text",
+            "completion_rule": "submit_response",
+            "prompt": [{ "type": "text", "value": "The original update is hidden. Explain the problem and your recommendation to your team lead in 2–4 sentences." }],
+            "natural_examples": [{ "label": "A natural answer", "text": "I noticed a critical issue during regression testing. It affects the checkout flow and prevents users from completing their orders. I'd recommend fixing it before the release." }],
+            "comparison_checklist": ["Did I say what I discovered?", "Did I explain the effect on users?", "Did I recommend a next step?", "Did I use at least one useful phrase from the activity?"],
+            "target_language_keys": ["notice-an-issue", "prevent-from-ing", "recommend-ing"],
+            "source_visibility": "hidden_until_help",
+            "hints": [
+              { "level": 1, "content": [{ "type": "text", "value": "Say what you discovered, explain the effect, and recommend a next step." }], "reveals_target_language": false },
+              { "level": 2, "content": [{ "type": "glossary_ref", "key": "recommend-ing", "display": "I'd recommend + -ing" }], "reveals_target_language": true }
+            ]
+          },
+          {
+            "key": "transfer-release-decision",
+            "phase": "transfer",
+            "title": "Respond to a new complication",
+            "progress_bearing": true,
+            "optional": false,
+            "type": "free_text",
+            "completion_rule": "submit_response",
+            "scenario": [{ "type": "text", "value": "Your team lead replies: “The release is tomorrow. Can we ship now and fix it next week?”" }],
+            "prompt": [{ "type": "text", "value": "Reply in 2–4 sentences. Explain your main concern and give a clear recommendation." }],
+            "natural_examples": [
+              { "label": "A direct professional answer", "text": "My main concern is that customers won't be able to complete their orders. Since the bug affects a critical flow, I'd recommend delaying the release until we fix it." },
+              { "label": "A balanced alternative", "text": "We could release as planned, but the checkout issue may directly affect sales. I'd recommend fixing the critical path first and then reassessing the release." }
+            ],
+            "comparison_checklist": ["Did I respond to the proposed release decision?", "Did I explain a consequence or trade-off?", "Did I make a clear, professional recommendation?", "Does my wording preserve my intended meaning?"],
+            "target_language_keys": ["main-concern", "affect-a-flow", "recommend-ing"],
+            "source_visibility": "hidden_until_help",
+            "hints": [{ "level": 1, "content": [{ "type": "glossary_ref", "key": "main-concern", "display": "My main concern is…" }], "reveals_target_language": true }]
+          },
+          {
+            "key": "reflect-language",
+            "phase": "reflect",
+            "title": "Choose what to revisit",
+            "progress_bearing": true,
+            "optional": false,
+            "type": "reflection",
+            "completion_rule": "explicit_finish",
+            "heading": "Useful language from this activity",
+            "glossary_keys": ["notice-an-issue", "during-regression-testing", "affect-a-flow", "prevent-from-ing", "recommend-ing", "main-concern"],
+            "custom_note_prompt": "Anything else you want to practise?",
+            "custom_note_placeholder": "A phrase, pattern, or situation…",
+            "self_assessment_scope": "activity",
+            "self_assessment_options": ["clear", "try_again", "need_support"]
+          }
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "key": "clarify-requirement-slot", "position": 2,
+      "default_activity": {
+        "key": "clarify-requirement-b1", "content_version": "1.0", "title": "Clarify one requirement", "level": "B1", "topic": "Requirements", "learning_objective": "Ask one clear clarification question.", "activity_type": "text_scenario", "compatible_modes": ["talk-about-something"], "compatible_states": ["ready", "tired"], "target_language_keys": ["do-you-mean"],
+        "glossary": [{ "key": "do-you-mean", "kind": "communicative_intention", "canonical_form": "Do you mean…?", "meaning_ru": "Вы имеете в виду…?", "example_en": "Do you mean all registered users?" }], "returning_items": [],
+        "steps": [{ "key": "clarify-response", "phase": "transfer", "title": "Ask for clarification", "progress_bearing": true, "optional": false, "type": "free_text", "completion_rule": "submit_response", "scenario": [{ "type": "text", "value": "The ticket says: Send the report to users." }], "prompt": [{ "type": "text", "value": "Ask which users should receive it." }], "natural_examples": [{ "label": "Example answer", "text": "Do you mean all registered users or only active customers?" }], "comparison_checklist": ["Did I ask a specific question?"], "target_language_keys": ["do-you-mean"], "source_visibility": "visible", "hints": [] }]
+      }, "alternatives": []
+    },
+    {
+      "key": "delay-update-slot", "position": 3,
+      "default_activity": {
+        "key": "delay-update-b2", "content_version": "1.0", "title": "Explain a delay", "level": "B2", "topic": "Work updates", "learning_objective": "Explain a delay and set a realistic next step.", "activity_type": "say_it_another_way", "compatible_modes": ["reconstruct"], "compatible_states": ["ready", "focused"], "target_language_keys": ["running-into"],
+        "glossary": [{ "key": "running-into", "kind": "chunk", "canonical_form": "run into an issue", "meaning_ru": "столкнуться с проблемой", "example_en": "We ran into an issue with the test environment." }], "returning_items": [],
+        "steps": [{ "key": "delay-rewrite", "phase": "transfer", "title": "Make the update clearer", "progress_bearing": true, "optional": false, "type": "free_text", "completion_rule": "submit_response", "prompt": [{ "type": "text", "value": "Rewrite this update with a reason and next step: It is late. We have a problem." }], "natural_examples": [{ "label": "Example answer", "text": "We're running into an issue with the test environment, so the update will be delayed. I'll share a revised estimate this afternoon." }], "comparison_checklist": ["Did I explain the reason?", "Did I give a next step?"], "target_language_keys": ["running-into"], "source_visibility": "visible", "hints": [] }]
+      }, "alternatives": []
+    },
+    {
+      "key": "automation-choice-slot", "position": 4,
+      "default_activity": {
+        "key": "automation-choice-c1", "content_version": "1.0", "title": "Explain an automation trade-off", "level": "C1", "topic": "Automation", "learning_objective": "Compare reliability and maintenance trade-offs.", "activity_type": "micro_explore", "compatible_modes": ["explore-a-topic"], "compatible_states": ["curious", "focused"], "target_language_keys": ["trade-off"],
+        "glossary": [{ "key": "trade-off", "kind": "chunk", "canonical_form": "the main trade-off is…", "meaning_ru": "главный компромисс заключается в…", "example_en": "The main trade-off is speed versus maintainability." }], "returning_items": [],
+        "steps": [{ "key": "tradeoff-response", "phase": "transfer", "title": "Explain the trade-off", "progress_bearing": true, "optional": false, "type": "free_text", "completion_rule": "submit_response", "prompt": [{ "type": "text", "value": "Compare a quick brittle script with a slower maintainable solution." }], "natural_examples": [{ "label": "Example answer", "text": "The main trade-off is delivery speed versus long-term maintenance. The quick script helps now, but the maintainable solution reduces future risk." }], "comparison_checklist": ["Did I compare both options?", "Did I explain a consequence?"], "target_language_keys": ["trade-off"], "source_visibility": "visible", "hints": [] }]
+      }, "alternatives": []
+    },
+    {
+      "key": "constructive-disagreement-slot", "position": 5,
+      "default_activity": {
+        "key": "constructive-disagreement-b2", "content_version": "1.0", "title": "Disagree constructively", "level": "B2", "topic": "Workplace communication", "learning_objective": "Disagree while acknowledging another view.", "activity_type": "conversation_bubble", "compatible_modes": ["talk-about-something"], "compatible_states": ["ready", "bored"], "target_language_keys": ["see-your-point"],
+        "glossary": [{ "key": "see-your-point", "kind": "communicative_intention", "canonical_form": "I see your point, but…", "meaning_ru": "Я понимаю вашу точку зрения, но…", "example_en": "I see your point, but we still need evidence from the test run." }], "returning_items": [],
+        "steps": [{ "key": "disagree-response", "phase": "transfer", "title": "Your reply", "progress_bearing": true, "optional": false, "type": "free_text", "completion_rule": "submit_response", "scenario": [{ "type": "text", "value": "A colleague says: We don't need to test this change again." }], "prompt": [{ "type": "text", "value": "Disagree politely and explain why another check matters." }], "natural_examples": [{ "label": "Example answer", "text": "I see your point, but this change affects a critical flow, so I'd still run a focused check." }], "comparison_checklist": ["Did I acknowledge the other view?", "Did I explain my reason?"], "target_language_keys": ["see-your-point"], "source_visibility": "visible", "hints": [] }]
+      }, "alternatives": []
+    },
+    {
+      "key": "marketing-result-slot", "position": 6,
+      "default_activity": {
+        "key": "marketing-result-b1", "content_version": "1.0", "title": "Describe a small experiment", "level": "B1", "topic": "Marketing", "learning_objective": "Describe a result and a simple conclusion.", "activity_type": "inline_dialogue_gap", "compatible_modes": ["reconstruct"], "compatible_states": ["tired", "ready"], "target_language_keys": ["result-suggests"],
+        "glossary": [{ "key": "result-suggests", "kind": "chunk", "canonical_form": "the result suggests that…", "meaning_ru": "результат показывает, что…", "example_en": "The result suggests that the shorter message works better." }], "returning_items": [],
+        "steps": [{ "key": "result-gap", "phase": "rebuild", "title": "Complete the conclusion", "progress_bearing": true, "optional": false, "type": "inline_text", "completion_rule": "submit_all", "prompt": [{ "type": "text", "value": "Complete the sentence." }], "items": [{ "key": "suggests-gap", "prompt": "The result ___ that the shorter message works better.", "accepted_answers": [{ "value": "suggests", "label": "target" }], "target_glossary_key": "result-suggests" }], "normalisation": { "ignore_case": true, "collapse_whitespace": true, "ignore_terminal_punctuation": true }, "completed_text": [{ "type": "text", "value": "The result suggests that the shorter message works better." }] }]
+      }, "alternatives": []
+    },
+    {
+      "key": "everyday-change-slot", "position": 7,
+      "default_activity": {
+        "key": "everyday-change-b2", "content_version": "1.0", "title": "Change a plan", "level": "B2", "topic": "Everyday conversation", "learning_objective": "Change a plan politely and offer an alternative.", "activity_type": "choose_then_personalize", "compatible_modes": ["surprise-me"], "compatible_states": ["bored", "ready"], "target_language_keys": ["would-you-mind"],
+        "glossary": [{ "key": "would-you-mind", "kind": "pattern", "canonical_form": "Would you mind if…?", "meaning_ru": "Ты не против, если…?", "example_en": "Would you mind if we met a little later?" }], "returning_items": [],
+        "steps": [{ "key": "change-plan-response", "phase": "transfer", "title": "Make it yours", "progress_bearing": true, "optional": false, "type": "free_text", "completion_rule": "submit_response", "prompt": [{ "type": "text", "value": "Ask to move an evening plan and suggest another time." }], "natural_examples": [{ "label": "Example answer", "text": "Would you mind if we met at eight instead? I need to finish something first." }], "comparison_checklist": ["Did I ask politely?", "Did I suggest a clear alternative?"], "target_language_keys": ["would-you-mind"], "source_visibility": "visible", "hints": [] }]
+      }, "alternatives": []
+    }
+  ]
+}

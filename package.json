@@ -1,0 +1,23 @@
+{
+  "name": "english-learning-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "schema:generate": "tsx scripts/generate-content-schema.ts",
+    "schema:check": "tsx scripts/generate-content-schema.ts --check",
+    "content:validate": "tsx scripts/validate-content.ts"
+  },
+  "dependencies": {
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.2"
+  }
+}
