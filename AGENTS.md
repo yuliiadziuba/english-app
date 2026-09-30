@@ -36,7 +36,16 @@ The v1 documents are historical. Follow current user instructions over project d
 
 Begin with the content contract and one complete learning example, then implement the phases in the v2 plan. Expand to ten sets/thirty base activities after the core flow is proven.
 
-No application scaffold, package scripts, test runner, or OpenSpec configuration exists at the time these instructions are created. Inspect the repository before running commands; do not invent commands or claim checks that did not run. Add actual install/dev/typecheck/lint/test/build commands here after scaffolding.
+The repository currently contains a TypeScript content-domain package, fixtures, tests, and OpenSpec planning. It does not yet contain the learner-facing Next.js application. Run commands from the repository root:
+
+- `npm.cmd ci`: install the exact locked dependencies.
+- `npm.cmd run typecheck`: check TypeScript without emitting files.
+- `npm.cmd test`: run the Vitest suite once.
+- `npm.cmd run schema:generate`: regenerate the portable JSON Schema from the runtime contract.
+- `npm.cmd run schema:check`: fail when the generated JSON Schema has drifted.
+- `npm.cmd run content:validate`: validate the sample sprint content.
+
+Inspect the repository before running commands and do not claim checks that did not run. Add application dev/lint/build commands here after the application scaffold exists.
 
 Test changes proportionately, especially import rollback, ownership isolation, saving/resume, unique sprint counting, answer variants, and evidence provenance. Verify mobile and keyboard interactions for learner-facing changes.
 
