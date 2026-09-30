@@ -18,8 +18,8 @@ export interface ActivityWork {
 export interface LocalLearningState {
   version: number;
   sprints: Record<string, Sprint>;
-  activeSprintKey?: string;
-  activeActivityKey?: string;
+  activeSprintKey?: string | undefined;
+  activeActivityKey?: string | undefined;
   activityWork: Record<string, ActivityWork>;
   screen: Screen;
 }
@@ -27,6 +27,9 @@ export interface LocalLearningState {
 export type LocalAction =
   | { type: "accept_sprint"; sprint: Sprint }
   | { type: "open_activity"; activityKey: string }
+  | { type: "previous_step"; activityKey: string }
+  | { type: "restart_activity"; activityKey: string }
+  | { type: "restart_sprint"; sprintKey: string }
   | { type: "go"; screen: Screen }
   | { type: "set_answer"; activityKey: string; stepKey: string; answer: unknown }
   | { type: "complete_step"; activityKey: string; stepKey: string; nextStepIndex?: number }
@@ -53,6 +56,18 @@ export function localReducer(state: LocalLearningState, action: LocalAction): Lo
   if (action.type === "open_activity") {
     return { ...state, activeActivityKey: action.activityKey, activityWork: ensureWork(state, action.activityKey), screen: "activity" };
   }
+  if (action.type === "restart_sprint") {
+    const sprint = state.sprints[action.sprintKey];
+    if (!sprint) return state;
+    const activityKeys = new Set(sprint.slots.flatMap((slot) => [slot.default_activity, ...slot.alternatives]).map((activity) => activity.key));
+    return {
+      ...state,
+      activeSprintKey: action.sprintKey,
+      activeActivityKey: undefined,
+      screen: "sprint",
+      activityWork: Object.fromEntries(Object.entries(state.activityWork).filter(([key]) => !activityKeys.has(key))),
+    };
+  }
   const current = state.activityWork[action.activityKey];
   if (!current) return state;
   const update = (work: ActivityWork, screen = state.screen): LocalLearningState => ({
@@ -61,6 +76,8 @@ export function localReducer(state: LocalLearningState, action: LocalAction): Lo
     activityWork: { ...state.activityWork, [action.activityKey]: work },
   });
   if (action.type === "set_answer") return update({ ...current, answers: { ...current.answers, [action.stepKey]: structuredClone(action.answer) } });
+  if (action.type === "previous_step") return update({ ...current, currentStepIndex: Math.max(0, current.currentStepIndex - 1) });
+  if (action.type === "restart_activity") return update(createActivityWork(), "activity");
   if (action.type === "complete_step") {
     const completedStepKeys = current.completedStepKeys.includes(action.stepKey) ? current.completedStepKeys : [...current.completedStepKeys, action.stepKey];
     return update({ ...current, completedStepKeys, currentStepIndex: action.nextStepIndex ?? current.currentStepIndex });

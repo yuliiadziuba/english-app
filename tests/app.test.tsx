@@ -10,17 +10,17 @@ describe("MVP learner interface", () => {
   it("starts the sample sprint and opens the first activity", async () => {
     const user = userEvent.setup();
     render(<App />);
-    await user.click(screen.getByRole("button", { name: "Start the sample sprint" }));
+    await user.click(screen.getByRole("button", { name: "Начать пример спринта" }));
     expect(screen.getByRole("heading", { name: "Active English Contract Sample" })).toBeInTheDocument();
-    await user.click(screen.getAllByRole("button", { name: "Start" })[0]!);
+    await user.click(screen.getAllByRole("button", { name: "Начать" })[0]!);
     expect(screen.getByRole("heading", { name: "A critical bug before release" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Finish for now" })).toBeInTheDocument();
+    expect(screen.getByText(/Прочитай обновление/)).toBeInTheDocument();
   });
 
   it("keeps invalid import text and displays its validation error", async () => {
     const user = userEvent.setup();
     render(<App />);
-    await user.click(screen.getByRole("button", { name: "Import" }));
+    await user.click(screen.getByRole("button", { name: "Импорт JSON" }));
     const input = screen.getByLabelText("Sprint JSON");
     await user.type(input, "not json");
     await user.click(screen.getByRole("button", { name: "Validate sprint" }));
@@ -31,7 +31,7 @@ describe("MVP learner interface", () => {
   it("shows all seven validated slots before explicit import", async () => {
     const user = userEvent.setup();
     render(<App />);
-    await user.click(screen.getByRole("button", { name: "Import" }));
+    await user.click(screen.getByRole("button", { name: "Импорт JSON" }));
     await user.click(screen.getByLabelText("Sprint JSON"));
     await user.paste(JSON.stringify(sampleSprint));
     await user.click(screen.getByRole("button", { name: "Validate sprint" }));
@@ -44,8 +44,8 @@ describe("MVP learner interface", () => {
   it("restores an activity after the interface is remounted", async () => {
     const user = userEvent.setup();
     const first = render(<App />);
-    await user.click(screen.getByRole("button", { name: "Start the sample sprint" }));
-    await user.click(screen.getAllByRole("button", { name: "Start" })[0]!);
+    await user.click(screen.getByRole("button", { name: "Начать пример спринта" }));
+    await user.click(screen.getAllByRole("button", { name: "Начать" })[0]!);
     first.unmount();
     render(<App />);
     expect(screen.getByRole("heading", { name: "A critical bug before release" })).toBeInTheDocument();

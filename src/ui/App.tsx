@@ -23,12 +23,12 @@ export function App() {
     <header className="topbar">
       <button className="brand" onClick={() => go("home")}>in context</button>
       <nav aria-label="Main navigation">
-        <button onClick={() => go("review")}>My language</button>
-        <button onClick={() => go("import")}>Import</button>
+        <button onClick={() => go("review")}>Мой словарь</button>
+        <button onClick={() => go("import")}>Импорт JSON</button>
       </nav>
     </header>
-    {state.screen === "home" && <Home state={state} activeSprint={activeSprint} onSample={() => accept(sample)} onGo={go} />}
-    {state.screen === "sprint" && <SprintView sprint={activeSprint} state={state} onOpen={(activityKey) => dispatch({ type: "open_activity", activityKey })} onGo={go} />}
+    {state.screen === "home" && <Home state={state} activeSprint={activeSprint} onSample={() => accept(sample)} onRestart={() => activeSprint && dispatch({ type: "restart_sprint", sprintKey: activeSprint.sprint_key })} onGo={go} />}
+    {state.screen === "sprint" && <SprintView sprint={activeSprint} state={state} onOpen={(activityKey) => dispatch({ type: "open_activity", activityKey })} onRestart={(activityKey) => dispatch({ type: "restart_activity", activityKey })} onGo={go} />}
     {state.screen === "activity" && activity && work && <ActivityPlayer activity={activity} work={work} dispatch={dispatch} onGo={go} />}
     {state.screen === "reflection" && activity && work && <Reflection activity={activity} work={work} dispatch={dispatch} onGo={go} />}
     {state.screen === "import" && <ImportView onAccept={accept} onGo={go} />}
@@ -36,24 +36,31 @@ export function App() {
   </main>;
 }
 
-function Home({ state, activeSprint, onSample, onGo }: { state: LocalLearningState; activeSprint?: Sprint | undefined; onSample: () => void; onGo: (screen: "sprint" | "import") => void }) {
+function Home({ state, activeSprint, onSample, onRestart, onGo }: { state: LocalLearningState; activeSprint?: Sprint | undefined; onSample: () => void; onRestart: () => void; onGo: (screen: "sprint" | "import") => void }) {
   const resume = findActivity(state);
   const resumeWork = resume ? state.activityWork[resume.key] : undefined;
+  const hasPractice = activeSprint?.slots.some((slot) => {
+    const work = state.activityWork[slot.default_activity.key];
+    return work?.finished || work?.completedStepKeys.length;
+  });
   return <section className="hero card">
-    <p className="eyebrow">English practice, one useful situation at a time</p>
-    <h1>Build sentences you can actually use.</h1>
-    <p>Read, notice useful chunks, rebuild them, then use them in your own words.</p>
+    <p className="eyebrow">Английский через реальные ситуации</p>
+    <h1>Учись формулировать мысли, а не просто запоминать слова.</h1>
+    <p>В каждом задании ты читаешь короткую ситуацию, замечаешь полезные конструкции, восстанавливаешь их и используешь своими словами.</p>
+    <p className="quiet">Импорт JSON нужен для нового спринта, который можно сгенерировать во внешнем ИИ по формату проекта. Данные этого MVP сохраняются только в этом браузере.</p>
     {activeSprint ? <>
-      <button className="primary" onClick={() => onGo("sprint")}>{resume ? `Resume: ${resume.title}` : `Open: ${activeSprint.title}`}</button>
-      {resumeWork && <p className="quiet">Your progress is saved in this browser.</p>}
+      <button className="primary" onClick={() => onGo("sprint")}>{resume ? `Продолжить: ${resume.title}` : `Открыть: ${activeSprint.title}`}</button>
+      <button className="secondary" onClick={() => onGo("import")}>Импортировать новый спринт JSON</button>
+      {hasPractice && <button className="secondary" onClick={onRestart}>Начать этот спринт заново</button>}
+      {resumeWork && <p className="quiet">Твой прогресс сохранён в этом браузере.</p>}
     </> : <>
-      <button className="primary" onClick={onSample}>Start the sample sprint</button>
-      <button className="secondary" onClick={() => onGo("import")}>Import a sprint JSON</button>
+      <button className="primary" onClick={onSample}>Начать пример спринта</button>
+      <button className="secondary" onClick={() => onGo("import")}>Импортировать спринт JSON</button>
     </>}
   </section>;
 }
 
-function SprintView({ sprint, state, onOpen, onGo }: { sprint?: Sprint | undefined; state: LocalLearningState; onOpen: (key: string) => void; onGo: (screen: "home" | "import") => void }) {
+function SprintView({ sprint, state, onOpen, onRestart, onGo }: { sprint?: Sprint | undefined; state: LocalLearningState; onOpen: (key: string) => void; onRestart: (key: string) => void; onGo: (screen: "home" | "import") => void }) {
   if (!sprint) return <EmptyState onGo={onGo} />;
   return <section>
     <div className="page-heading"><div><p className="eyebrow">Seven practice slots</p><h1>{sprint.title}</h1><p>{sprint.learning_goal}</p></div><button className="secondary" onClick={() => onGo("import")}>Import another sprint</button></div>
@@ -61,7 +68,7 @@ function SprintView({ sprint, state, onOpen, onGo }: { sprint?: Sprint | undefin
       const activity = slot.default_activity;
       const work = state.activityWork[activity.key];
       const progress = calculateProgress(activity.steps, new Set(work?.completedStepKeys ?? []));
-      return <article className="slot card" key={slot.key}><span className="slot-number">{slot.position}</span><div><p className="eyebrow">{activity.level} · {activity.topic}</p><h2>{activity.title}</h2><p>{activity.learning_objective}</p><div className="progress" aria-label={`${progress}% complete`}><span style={{ width: `${progress}%` }} /></div><p className="quiet">{progress}% of planned steps completed</p></div><button className="primary" onClick={() => onOpen(activity.key)}>{work?.finished ? "Practise again" : work ? "Resume" : "Start"}</button></article>;
+      return <article className="slot card" key={slot.key}><span className="slot-number">{slot.position}</span><div><p className="eyebrow">{activity.level} · {activity.topic}</p><h2>{activity.title}</h2><p>{activity.learning_objective}</p><div className="progress" aria-label={`${progress}% complete`}><span style={{ width: `${progress}%` }} /></div><p className="quiet">{progress}% of planned steps completed</p></div><button className="primary" onClick={() => work?.finished ? onRestart(activity.key) : onOpen(activity.key)}>{work?.finished ? "Пройти снова" : work ? "Продолжить" : "Начать"}</button></article>;
     })}</div>
   </section>;
 }
@@ -82,7 +89,7 @@ function ActivityPlayer({ activity, work, dispatch, onGo }: { activity: Activity
   return <section className="activity-layout">
     <div className="activity-header"><button className="back" onClick={() => onGo("sprint")}>← Sprint</button><p className="eyebrow">{activity.level} · {step.phase}</p><h1>{activity.title}</h1><p>{activity.learning_objective}</p><div className="progress" aria-label={`${progress}% complete`}><span style={{ width: `${progress}%` }} /></div><p className="quiet">{progress}% complete</p></div>
     <article className="step-card card"><h2>{step.title}</h2><StepView step={step} savedAnswer={work.answers[step.key]} onSave={(answer) => dispatch({ type: "set_answer", activityKey: activity.key, stepKey: step.key, answer })} onComplete={complete} onGlossary={setGlossaryKey} /></article>
-    <div className="activity-actions"><button className="secondary" onClick={() => dispatch({ type: "finish", activityKey: activity.key })}>Finish for now</button></div>
+    <div className="activity-actions">{work.currentStepIndex > 0 && <button className="secondary" onClick={() => dispatch({ type: "previous_step", activityKey: activity.key })}>← Предыдущее задание</button>}<button className="secondary" onClick={() => dispatch({ type: "finish", activityKey: activity.key })}>Finish for now</button></div>
     {glossaryKey && <GlossaryCard activity={activity} glossaryKey={glossaryKey} saved={work.savedGlossaryKeys.includes(glossaryKey)} onToggle={() => dispatch({ type: "toggle_glossary", activityKey: activity.key, glossaryKey })} onClose={() => setGlossaryKey(undefined)} />}
   </section>;
 }
@@ -91,14 +98,32 @@ function StepView({ step, savedAnswer, onSave, onComplete, onGlossary }: { step:
   const [value, setValue] = useState(typeof savedAnswer === "string" ? savedAnswer : "");
   const [answers, setAnswers] = useState<Record<string, string>>((savedAnswer && typeof savedAnswer === "object" ? savedAnswer as Record<string, string> : {}));
   const [showCompare, setShowCompare] = useState(false);
-  if (step.type === "content_acknowledgement") return <><StructuredText content={step.instruction} onGlossary={onGlossary} /><div className="reading"><StructuredText content={step.content} onGlossary={onGlossary} /></div><button className="primary" onClick={() => onComplete("acknowledged")}>{step.continue_label}</button></>;
-  if (step.type === "language_noticing") return <><StructuredText content={step.prompt} onGlossary={onGlossary} /><div className="reading"><StructuredText content={step.source} onGlossary={onGlossary} /></div>{step.jobs.map((job) => <label className="field" key={job.key}>{job.label}<select value={answers[job.key] ?? ""} onChange={(event) => setAnswers({ ...answers, [job.key]: event.target.value })}><option value="">Choose a phrase</option>{job.accepted_glossary_keys.map((key) => <option key={key} value={key}>{key.replaceAll("-", " ")}</option>)}</select></label>)}<button className="primary" disabled={step.jobs.some((job) => !answers[job.key])} onClick={() => onComplete(answers)}>Continue</button></>;
-  if (step.type === "inline_text" || step.type === "reconstruction") return <><StructuredText content={step.prompt} onGlossary={onGlossary} />{step.items.map((item) => { const result = answers[item.key] === undefined ? undefined : matchAnswer(answers[item.key] ?? "", item.accepted_answers.map((answer) => answer.value), step.normalisation); return <label className="field" key={item.key}>{item.prompt}<input value={answers[item.key] ?? ""} onChange={(event) => setAnswers({ ...answers, [item.key]: event.target.value })} />{result && <span className={result.status === "matched" ? "feedback good" : "feedback"}>{result.status === "matched" ? "Matched the supplied answer." : "Not matched to the supplied answers."} Target: {item.accepted_answers[0]!.value}</span>}</label>; })}<button className="primary" disabled={step.items.some((item) => !answers[item.key]?.trim())} onClick={() => onComplete(answers)}>Check and continue</button></>;
-  if (step.type === "free_text") return <>{step.scenario && <div className="reading"><StructuredText content={step.scenario} onGlossary={onGlossary} /></div>}<StructuredText content={step.prompt} onGlossary={onGlossary} /><label className="field">Your answer<textarea rows={6} value={value} onChange={(event) => setValue(event.target.value)} /></label><div className="button-row"><button className="primary" disabled={!value.trim()} onClick={() => { onSave(value); setShowCompare(true); }}>Save and compare</button>{value && <button className="secondary" onClick={() => { onSave(value); setShowCompare(true); }}>Compare answers</button>}</div>{showCompare && <><Comparison step={step} /><button className="primary" onClick={() => onComplete(value)}>Continue</button></>}</>;
+  const russianInstruction = russianStepInstruction(step.key);
+  if (step.type === "content_acknowledgement") return <><p className="instruction-ru">{russianInstruction}</p><StructuredText content={step.instruction} onGlossary={onGlossary} /><div className="reading"><StructuredText content={step.content} onGlossary={onGlossary} /></div><button className="primary" onClick={() => onComplete("acknowledged")}>{step.continue_label}</button></>;
+  if (step.type === "language_noticing") return <><p className="instruction-ru">{russianInstruction}</p><StructuredText content={step.prompt} onGlossary={onGlossary} /><div className="reading"><StructuredText content={step.source} onGlossary={onGlossary} /></div>{step.jobs.map((job) => <label className="field" key={job.key}>{job.label}<select value={answers[job.key] ?? ""} onChange={(event) => setAnswers({ ...answers, [job.key]: event.target.value })}><option value="">Choose a phrase</option>{job.accepted_glossary_keys.map((key) => <option key={key} value={key}>{key.replaceAll("-", " ")}</option>)}</select></label>)}<button className="primary" disabled={step.jobs.some((job) => !answers[job.key])} onClick={() => onComplete(answers)}>Continue</button></>;
+  if (step.type === "inline_text" || step.type === "reconstruction") return <><p className="instruction-ru">{russianInstruction}</p><StructuredText content={step.prompt} onGlossary={onGlossary} />{step.items.map((item) => { const result = answers[item.key] === undefined ? undefined : matchAnswer(answers[item.key] ?? "", item.accepted_answers.map((answer) => answer.value), step.normalisation); return <label className="field" key={item.key}>{item.prompt}<input value={answers[item.key] ?? ""} onChange={(event) => setAnswers({ ...answers, [item.key]: event.target.value })} />{result && <span className={result.status === "matched" ? "feedback good" : "feedback"}>{result.status === "matched" ? "Matched the supplied answer." : "Not matched to the supplied answers."} Target: {item.accepted_answers[0]!.value}</span>}</label>; })}<button className="primary" disabled={step.items.some((item) => !answers[item.key]?.trim())} onClick={() => onComplete(answers)}>Check and continue</button></>;
+  if (step.type === "free_text") return <><p className="instruction-ru">{russianInstruction}</p>{step.scenario && <div className="reading"><StructuredText content={step.scenario} onGlossary={onGlossary} /></div>}<StructuredText content={step.prompt} onGlossary={onGlossary} /><label className="field">Your answer<textarea rows={6} value={value} onChange={(event) => setValue(event.target.value)} /></label><div className="button-row"><button className="primary" disabled={!value.trim()} onClick={() => { onSave(value); setShowCompare(true); }}>Save and compare</button>{value && <button className="secondary" onClick={() => { onSave(value); setShowCompare(true); }}>Compare answers</button>}</div>{showCompare && <><Comparison step={step} /><button className="primary" onClick={() => onComplete(value)}>Continue</button></>}</>;
   return <p>This reflection appears after you finish the activity.</p>;
 }
 
 function Comparison({ step }: { step: Extract<ActivityStep, { type: "free_text" }> }) { return <div className="comparison"><h3>Compare, don’t grade</h3>{step.natural_examples.map((example) => <div key={example.label}><strong>{example.label}</strong><p>{example.text}</p></div>)}<strong>Questions to ask yourself</strong><ul>{step.comparison_checklist.map((item) => <li key={item}>{item}</li>)}</ul></div>; }
+
+function russianStepInstruction(stepKey: string): string {
+  const translations: Record<string, string> = {
+    "understand-update": "Прочитай обновление. Нажимай на подчёркнутые фразы, если хочешь увидеть перевод и пояснение.",
+    "notice-jobs": "Выбери подходящую фразу для каждой коммуникативной задачи.",
+    "rebuild-update": "Восстанови пропущенные части предложения по смыслу.",
+    "retrieve-update": "Исходный текст скрыт. Своими словами объясни проблему и рекомендацию в 2–4 предложениях.",
+    "transfer-release-decision": "Ответь на новую ситуацию в 2–4 предложениях: объясни риск и дай рекомендацию.",
+    "clarify-response": "Сформулируй уточняющий вопрос по ситуации.",
+    "delay-rewrite": "Перепиши обновление: добавь причину задержки и следующий шаг.",
+    "tradeoff-response": "Сравни два варианта и объясни их последствия.",
+    "disagree-response": "Вежливо не согласись и объясни, почему дополнительная проверка важна.",
+    "result-gap": "Заполни пропуск подходящим словом.",
+    "change-plan-response": "Вежливо попроси изменить план и предложи другое время.",
+  };
+  return translations[stepKey] ?? "Выполни задание. Подчёркнутые фразы можно открыть, чтобы увидеть перевод и пояснение.";
+}
 
 function StructuredText({ content, onGlossary }: { content: readonly { type: "text"; value: string }[] | readonly { type: "glossary_ref"; key: string; display: string }[] | any; onGlossary: (key: string) => void }) { return <p className="structured-text">{content.map((segment: any, index: number) => segment.type === "glossary_ref" ? <button className="phrase" key={`${segment.key}-${index}`} onClick={() => onGlossary(segment.key)}>{segment.display}</button> : <span key={index}>{segment.value}</span>)}</p>; }
 

@@ -31,4 +31,16 @@ describe("local learner state", () => {
     storage.set(LOCAL_STORAGE_KEY, JSON.stringify({ ...state, version: 999 }));
     expect(loadLocalState(adapter).sprints).toEqual({});
   });
+
+  it("can go back one step and restart an activity without altering its sprint snapshot", () => {
+    const activity = sample.slots[0]!.default_activity;
+    let state = localReducer(emptyLocalState(), { type: "accept_sprint", sprint: sample });
+    state = localReducer(state, { type: "open_activity", activityKey: activity.key });
+    state = localReducer(state, { type: "complete_step", activityKey: activity.key, stepKey: "understand-update", nextStepIndex: 1 });
+    state = localReducer(state, { type: "previous_step", activityKey: activity.key });
+    expect(state.activityWork[activity.key]!.currentStepIndex).toBe(0);
+    state = localReducer(state, { type: "restart_activity", activityKey: activity.key });
+    expect(state.activityWork[activity.key]!.completedStepKeys).toEqual([]);
+    expect(state.sprints[sample.sprint_key]!.slots[0]!.default_activity.title).toBe(activity.title);
+  });
 });
