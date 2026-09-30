@@ -44,6 +44,8 @@ The repository currently contains a TypeScript content-domain package, fixtures,
 - `npm.cmd run schema:generate`: regenerate the portable JSON Schema from the runtime contract.
 - `npm.cmd run schema:check`: fail when the generated JSON Schema has drifted.
 - `npm.cmd run content:validate`: validate the sample sprint content.
+- `npm.cmd run dev`: run the local React/Vite MVP.
+- `npm.cmd run build`: typecheck and create the static production build.
 
 Inspect the repository before running commands and do not claim checks that did not run. Add application dev/lint/build commands here after the application scaffold exists.
 

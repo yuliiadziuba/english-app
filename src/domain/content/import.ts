@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { CONTENT_LIMITS, SprintSchema, type Sprint } from "./schema.js";
 
 export interface ValidationProblem {
@@ -23,7 +22,7 @@ export type PrepareImportResult =
   | { ok: false; sourceText: string; problems: ValidationProblem[]; repairPrompt: string };
 
 export function extractJsonInput(sourceText: string): { ok: true; jsonText: string } | { ok: false; problem: ValidationProblem } {
-  if (Buffer.byteLength(sourceText, "utf8") > CONTENT_LIMITS.encodedDocumentBytes) {
+  if (new TextEncoder().encode(sourceText).byteLength > CONTENT_LIMITS.encodedDocumentBytes) {
     return {
       ok: false,
       problem: {
@@ -88,7 +87,7 @@ export function prepareSprintImport(
   if (referenceProblems.length > 0) return invalid(sourceText, referenceProblems);
 
   const canonical = stableStringify(validated.data);
-  const fingerprint = createHash("sha256").update(ownerScope).update("\0").update(canonical).digest("hex");
+  const fingerprint = stableFingerprint(`${ownerScope}\0${canonical}`);
   const immutableSprint = deepFreeze(structuredClone(validated.data));
   return {
     ok: true,
@@ -122,6 +121,19 @@ function stableStringify(value: unknown): string {
     return `{${entries.map(([key, item]) => `${JSON.stringify(key)}:${stableStringify(item)}`).join(",")}}`;
   }
   return JSON.stringify(value);
+}
+
+// A deterministic, browser-compatible identifier for local import deduplication.
+// It is not used as a security boundary or to protect private data.
+function stableFingerprint(value: string): string {
+  let first = 0x811c9dc5;
+  let second = 0x01000193;
+  for (let index = 0; index < value.length; index += 1) {
+    const code = value.charCodeAt(index);
+    first = Math.imul(first ^ code, 0x01000193);
+    second = Math.imul(second ^ (code + index), 0x27d4eb2d);
+  }
+  return `${(first >>> 0).toString(16).padStart(8, "0")}${(second >>> 0).toString(16).padStart(8, "0")}`;
 }
 
 function deepFreeze<T>(value: T): T {
